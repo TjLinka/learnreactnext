@@ -3,8 +3,6 @@ import { getToken, setToken } from "@/app/lib/actions";
 const { default: axios } = require("axios");
 
 const createApi = async () => {
-  const token = await getToken();
-
   const MyApi = axios.create({
     baseURL: "https://back.grandchef.info",
     withCredentials: true,
@@ -12,8 +10,6 @@ const createApi = async () => {
       common: {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        "access-token": `Bearer ${token}`,
       },
       withCredentials: true,
     },
@@ -21,7 +17,6 @@ const createApi = async () => {
 
   return MyApi;
 };
-
 
 const MyApi = await createApi();
 

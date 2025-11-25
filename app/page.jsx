@@ -6,16 +6,32 @@ import ArrowBack from "../public/icons/arrow-right.svg";
 import RecipeCard from "@/components/Recipe/RecipeCard";
 import MyApi from "@/assets/MyApi";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 export default async function MainPage() {
-  const res = await MyApi.post("/api/partner/catalog/get-catalog-bytyp", {
-    i_typ: 3,
-  })
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get("token")
+    ? cookiesStore.get("token").value
+    : null;
+  console.log(token);
+  
+  const res = await MyApi.post(
+    "/api/partner/catalog/get-catalog-bytyp",
+    {
+      i_typ: 3,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        access_token: `Bearer ${token}`,
+      },
+    }
+  )
     .then((Response) => {
       return Response.data.reverse().splice(0, 8);
     })
     .catch((error) => {
-      console.log(error.response);
+      // console.log(error.response);
     });
   return (
     <div>
